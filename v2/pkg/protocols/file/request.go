@@ -22,7 +22,6 @@ import (
 	"github.com/projectdiscovery/nuclei/v2/pkg/protocols/common/helpers/eventcreator"
 	"github.com/projectdiscovery/nuclei/v2/pkg/protocols/common/helpers/responsehighlighter"
 	templateTypes "github.com/projectdiscovery/nuclei/v2/pkg/templates/types"
-	"github.com/projectdiscovery/sliceutil"
 )
 
 var _ protocols.Request = &Request{}
@@ -317,10 +316,20 @@ func (request *Request) buildEvent(input, filePath string, fileMatches []FileMat
 					result.Lines = append(result.Lines, exprLines[extractedResult]...)
 				}
 			}
-			result.Lines = sliceutil.DedupeInt(result.Lines)
+			result.Lines = DedupeInt(result.Lines)
 		}
 	}
 	return event
+}
+func DedupeInt(v []int) (r []int) {
+	seen := make(map[int]struct{})
+	for _, vv := range v {
+		if _, ok := seen[vv]; !ok {
+			seen[vv] = struct{}{}
+			r = append(r, vv)
+		}
+	}
+	return
 }
 
 func dumpResponse(event *output.InternalWrappedEvent, requestOptions *protocols.ExecuterOptions, filematches []FileMatch, filePath string) {

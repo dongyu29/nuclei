@@ -11,6 +11,7 @@ import (
 	"github.com/projectdiscovery/nuclei/v2/pkg/protocols"
 	"github.com/projectdiscovery/nuclei/v2/pkg/protocols/common/executer"
 	"github.com/projectdiscovery/nuclei/v2/pkg/protocols/offlinehttp"
+	"github.com/projectdiscovery/nuclei/v2/pkg/templates/cache"
 	"github.com/projectdiscovery/nuclei/v2/pkg/utils"
 	"github.com/projectdiscovery/stringsutil"
 )
@@ -19,10 +20,10 @@ var (
 	ErrCreateTemplateExecutor = errors.New("cannot create template executer")
 )
 
-//var parsedTemplatesCache *cache.Templates
+var parsedTemplatesCache *cache.Templates
 
 func init() {
-	//parsedTemplatesCache = cache.New()
+	parsedTemplatesCache = cache.New()
 }
 
 // Parse parses a yaml request template file
@@ -98,7 +99,7 @@ func Parse(filePath string, preprocessor Preprocessor, options protocols.Execute
 
 	template.parseSelfContainedRequests()
 
-	//parsedTemplatesCache.Store(filePath, template, err)
+	parsedTemplatesCache.Store(filePath, template, err)
 	return template, nil
 }
 

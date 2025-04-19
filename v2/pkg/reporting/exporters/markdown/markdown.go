@@ -8,7 +8,6 @@ import (
 
 	"github.com/projectdiscovery/nuclei/v2/pkg/output"
 	"github.com/projectdiscovery/nuclei/v2/pkg/reporting/format"
-	"github.com/projectdiscovery/stringsutil"
 )
 
 type Exporter struct {
@@ -74,9 +73,23 @@ func (exporter *Exporter) Close() error {
 	return nil
 }
 
+//func sanitizeFilename(filename string) string {
+//	if len(filename) > 256 {
+//		filename = filename[0:255]
+//	}
+//	return stringsutil.ReplaceAny(filename, "_", "?", "/", ">", "|", ":", ";", "*", "<", "\"", "'", " ")
+//}
 func sanitizeFilename(filename string) string {
 	if len(filename) > 256 {
 		filename = filename[0:255]
 	}
-	return stringsutil.ReplaceAny(filename, "_", "?", "/", ">", "|", ":", ";", "*", "<", "\"", "'", " ")
+	return ReplaceAny(filename, "_", "?", "/", ">", "|", ":", ";", "*", "<", "\"", "'", " ")
+}
+
+//我自己修补加的
+func ReplaceAny(s, new string, olds ...string) string {
+	for _, old := range olds {
+		s = strings.ReplaceAll(s, old, new)
+	}
+	return s
 }
