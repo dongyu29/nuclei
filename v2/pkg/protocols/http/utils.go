@@ -115,7 +115,7 @@ func normalizeResponseBody(resp *http.Response, response *redirectedResponse) er
 // dump creates a dump of the http request in form of a byte slice
 func dump(req *generatedRequest, reqURL string) ([]byte, error) {
 	if req.request != nil {
-		cloned := req.request.Clone(context.Background())
+		cloned := req.request.Request.Clone(context.Background())
 
 		// Create a copy on the fly of the request body - ignore errors
 		bodyBytes, _ := req.request.BodyBytes()
